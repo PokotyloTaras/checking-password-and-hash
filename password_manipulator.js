@@ -1,33 +1,34 @@
+import fs from 'fs';
+import readline from "readline-sync";
 import bcrypt from "bcrypt"
-import { readFileSync } from "node:fs";
+
 const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
+const filePath = './password.txt'
 
-// bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-//     console.log(hash)
-// });
+const userInput = readline.question('Enter password: ', { hideEchoBack: true });
+let data = ""
 
-bcrypt.compare(
-    myPlaintextPassword,
-    '$2b$10$lGpT1MVA.9EdnPW8uHp3xOdM3w.ilUv12VKfMDtY33l8GCruC0Aia'
-).then((data) => {
-    console.log(data)
-})
-
-let pass = " "
-try{
-    pass = readFileSync('password.txt');
-    pass = pass.trim();
-}   
-catch(error){
-    console.log(error.message);
-}
-    console.log(pass.toString()) 
-
-if (!pass) {
-    fs.writeFileSync('password.txt', 'pass');
-}
-    else{
-        // check if password and hash matches
+try {
+    if (fs.existsSync(filePath)) {
+        data = fs.readFileSync(filePath, 'utf8').trim();
     }
+} catch (error) {
+    console.log("Problem:", error.message);
+}
+
+if (data === '' ) {
+   const hash = bcrypt.hashSync(userInput, saltRounds);
+   fs.writeFileSync(filePath, hash);
+    console.log('password is saved')
+    
+}
+
+    else{
+      const isMatch = bcrypt.compareSync(userInput, data);
+    
+    if (isMatch) {
+        console.log('True password');
+    } else {
+        console.log('Wrong password!');
+    }
+}
