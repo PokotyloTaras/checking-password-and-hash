@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 const saltRounds = 10;
 const filePath = './password.txt'
 
-const userInput = readline.question('Enter password: ', { hideEchoBack: true });
+const userInput = readline.question('Enter password: ');
 let data = ""
 
 try {
