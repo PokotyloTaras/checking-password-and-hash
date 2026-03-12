@@ -41,8 +41,11 @@ const initializeDatabase = async () => {
    }
 };
 
-async function registerEmail(email, hashPassword) {
+async function registerEmail(email, password) {
    try {
+    const hashPassword = bcrypt.hashSync(password, saltRounds);
+       fs.writeFileSync(filePath, hashPassword);
+
     const query = `
         INSERT INTO users_test (
             email, password
