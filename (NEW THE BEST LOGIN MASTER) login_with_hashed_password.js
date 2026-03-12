@@ -41,7 +41,7 @@ const initializeDatabase = async () => {
    }
 };
 
-async function addEmail(email, hashPassword) {
+async function registerEmail(email, hashPassword) {
    try {
     const query = `
         INSERT INTO users_test (
@@ -122,14 +122,14 @@ switch(process.argv[2]) {
       await getAllUsers();
       break;
    }
-   case "add":{ 
+   case "register":{ 
       if (process.argv.length < 5 || !email || !password){
          console.log("Something went wrong")
-         console.log("How to use `add`: node `your_file_name.js` add <email> <password>")
-         console.log("Example: node dataBase.js add dffas@gmail.com 123123")
+         console.log("How to use `register`: node `your_file_name.js` register <email> <password>")
+         console.log("Example: node dataBase.js register dffas@gmail.com 123123")
          break;
    } else {
-    await addEmail(email, password);
+    await registerEmail(email, password);
    }
 
     break;
@@ -140,7 +140,7 @@ switch(process.argv[2]) {
         if (process.argv.length < 5 || !email || !password){
         console.log("Something went wrong")
         console.log("How to use `login`: node `your_file_name.js` login <email> <password>")
-        console.log("Example: node dataBase.js add dffas@gmail.com 123123")
+        console.log("Example: node dataBase.js login dffas@gmail.com 123123")
         break;
         } else{
             await login(email, password);
@@ -167,4 +167,3 @@ switch(process.argv[2]) {
 
 
 await pool.end();
-
